@@ -1,5 +1,5 @@
 {
-    "name": "icomefromthenet/reverse-regex",
+    "name": "charithar/reverse-regex",
     "description": "Convert Regular Expressions into text, for testing",
     "keywords": ["regex","testing","test data","generator"],
     "homepage": "http://github.com/icomefromthenet/ReverseRegex",
