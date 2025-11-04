@@ -1,11 +1,11 @@
 <?php
 namespace ReverseRegex\Generator;
 
-use \ArrayObject;
-use \SplObjectStorage;
-use \ArrayAccess;
-use \Countable;
-use \Iterator;
+use ArrayObject;
+use SplObjectStorage;
+use ArrayAccess;
+use Countable;
+use Iterator;
 
 /**
   *  Base to all Generator Scopes 
@@ -18,17 +18,17 @@ class Node implements ArrayAccess, Countable, Iterator
     /**
       *  @var string name of the node 
       */
-    protected $label;
+    protected string $label;
     
     /**
       *  @var ArrayObject container for node metadata 
       */
-    protected $attrs;
+    protected ArrayObject $attrs;
     
     /**
       *  @var SplObjectStorage container for node relationships 
       */
-    protected $links;
+    protected SplObjectStorage $links;
 
     /**
       *  Class Constructor
@@ -36,7 +36,7 @@ class Node implements ArrayAccess, Countable, Iterator
       *  @access public
       *  @param string $label
       */
-    public function __construct($label = 'node')
+    public function __construct(string $label = 'node')
     {
         $this->attrs = new ArrayObject();
         $this->links = new SplObjectStorage();
