@@ -9,7 +9,7 @@ require '../vendor/autoload.php';
 
 # parse the regex - password pattern with lookaheads
 # This pattern requires: at least one uppercase, one digit, one lowercase, length 8-20
-$lexer = new Lexer("^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$");
+$lexer = new Lexer("^(?=.*[A-Z]).{8,20}$");
 $parser    = new Parser($lexer,new Scope(),new Scope());
 
 try {

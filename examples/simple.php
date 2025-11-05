@@ -8,7 +8,7 @@ use ReverseRegex\Random\MersenneRandom;
 require '../vendor/autoload.php';
 
 # parse the regex
-$lexer = new Lexer("[a-z]{10}");
+$lexer = new Lexer("[\~\!@#$%&\*\-\:\+\=\[\]]{3,6}");
 $scope = new Scope();
 $parser    = new Parser($lexer,new Scope(),new Scope());
 $generator = $parser->parse()->getResult();
