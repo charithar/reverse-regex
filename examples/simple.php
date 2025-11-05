@@ -9,6 +9,7 @@ require '../vendor/autoload.php';
 
 # parse the regex
 $lexer = new Lexer("[a-z]{10}");
+$scope = new Scope();
 $parser    = new Parser($lexer,new Scope(),new Scope());
 $generator = $parser->parse()->getResult();
 

@@ -89,18 +89,23 @@ class Parser
                 
                 switch(true) {
                     case($this->lexer->isNextToken(Lexer::T_GROUP_OPEN)) :
-                        
-                        # is the group character the first token? is the regex wrapped in brackets. 
-                        //if($this->lexer->token === null) {
-                          //  continue;
-                        //}
-                        
-                        # note this is a new group create new parser instance.
-                        $parser = new Parser($this->lexer,new Scope(),new Scope());
-                        
-                        $this->left = $parser->parse(true)->getResult();
-                        $this->head->attach($this->left);  
-                    
+
+                        # Check if this is a lookahead assertion
+                        $lookaheadType = $this->lexer->checkLookahead();
+
+                        if ($lookaheadType === Lexer::T_LOOKAHEAD_POS || $lookaheadType === Lexer::T_LOOKAHEAD_NEG) {
+                            # Parse lookahead assertion
+                            $isPositive = ($lookaheadType === Lexer::T_LOOKAHEAD_POS);
+                            $this->left = self::createSubParser('lookahead')->parse($this->left, $this->head, $this->lexer, $isPositive);
+                            $this->head->attach($this->left);
+                        } else {
+                            # Regular group - note this is a new group create new parser instance.
+                            $parser = new Parser($this->lexer,new Scope(),new Scope());
+
+                            $this->left = $parser->parse(true)->getResult();
+                            $this->head->attach($this->left);
+                        }
+
                     break;
                     case($this->lexer->isNextToken(Lexer::T_GROUP_CLOSE)) :
                         
@@ -223,10 +228,11 @@ class Parser
     
     
     public static $sub_parsers = array(
-      'character'  => '\\ReverseRegex\\Parser\\CharacterClass', 
+      'character'  => '\\ReverseRegex\\Parser\\CharacterClass',
        'unicode'   => '\\ReverseRegex\\Parser\\Unicode',
        'quantifer' => '\\ReverseRegex\\Parser\\Quantifier',
-       'short'     => '\\ReverseRegex\\Parser\\Short'
+       'short'     => '\\ReverseRegex\\Parser\\Short',
+       'lookahead' => '\\ReverseRegex\\Parser\\Lookahead'
     );
     
     /**

@@ -110,9 +110,9 @@ class MersenneRandom implements GeneratorInterface
     *       because it maintains both speed and elegance. Though not a crucial difference under normal use, on 1 million iterations,
     *       re-seeding each time, it will save 5 minutes of time from the orginal algorithm - at least on my system.
     *
-    * @param $index An index indicating the index of the internal array to select the number to generate the random number from
-    * @param $min  The minimum number to return
-    * @param $max The maximum number to return
+    * @param int|null $index An index indicating the index of the internal array to select the number to generate the random number from
+    * @param int $min  The minimum number to return
+    * @param int $max The maximum number to return
     * @return float the random number
     * @link http://boxrefuge.com/?tag=random-number
     * @author Justin unknown
@@ -156,7 +156,7 @@ class MersenneRandom implements GeneratorInterface
         $y ^= ($y << 7) & 0x9d2c5680;
         $y ^= ($y << 15) & 0xefc60000;
         $y ^= $y >> 18;
-     
+
         return $y % ($max - $min + 1) + $min;
     }
     

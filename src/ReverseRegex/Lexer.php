@@ -102,11 +102,21 @@ class Lexer extends BaseLexer
     const T_CHOICE_BAR  = 15;
     
     /**
-      *  The dot character (.) 
+      *  The dot character (.)
       */
     const T_DOT         = 16;
-    
-    
+
+    /**
+      *  Positive lookahead (?=)
+      */
+    const T_LOOKAHEAD_POS = 17;
+
+    /**
+      *  Negative lookahead (?!)
+      */
+    const T_LOOKAHEAD_NEG = 18;
+
+
     //  ----------------------------------------------------------------------------
     # Shorthand constants
     
@@ -157,11 +167,21 @@ class Lexer extends BaseLexer
     protected $group_set = 0;
     
     /**
-      *  @var number of characters parsed inside the set 
+      *  @var number of characters parsed inside the set
       */
     protected $set_internal_counter = 0;
-    
-    
+
+    /**
+      *  @var boolean flag to indicate we're in a lookahead group
+      */
+    protected $lookahead_mode = false;
+
+    /**
+      *  @var string type of lookahead (positive or negative)
+      */
+    protected $lookahead_type = null;
+
+
     //  ----------------------------------------------------------------------------
     # Doctrine\Common\Lexer Methods
 
@@ -366,8 +386,34 @@ class Lexer extends BaseLexer
         if($this->set_mode === true) {
             throw new LexerException('Character Class that been closed');
         }
-        
+
     }
-    
+
+    /**
+     * Check if the next tokens form a lookahead pattern (?= or ?!)
+     * This should be called after a T_GROUP_OPEN token
+     *
+     * @return int|null Returns T_LOOKAHEAD_POS, T_LOOKAHEAD_NEG, or null
+     */
+    public function checkLookahead()
+    {
+        // Save current position
+        $currentPos = $this->lookahead['position'];
+
+        // Check if next token is ?
+        if ($this->lookahead['value'] === '?') {
+            // Move to next token
+            if ($this->moveNext()) {
+                if ($this->lookahead['value'] === '=') {
+                    return self::T_LOOKAHEAD_POS;
+                } elseif ($this->lookahead['value'] === '!') {
+                    return self::T_LOOKAHEAD_NEG;
+                }
+            }
+        }
+
+        return null;
+    }
+
 }
 /* End of File */

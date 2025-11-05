@@ -59,7 +59,7 @@ class Quantifier implements StrategyInterface
     public function quantifyPlus(Scope $head, Scope $result, Lexer $lexer)
     {
         $min = 1;
-        $max = PHP_INT_MAX;
+        $max = 100;//PHP_INT_MAX;
         
         $head->setMaxOccurances($max);
         $head->setMinOccurances($min);
@@ -79,7 +79,7 @@ class Quantifier implements StrategyInterface
     public function quantifyStar(Scope $head, Scope $result, Lexer $lexer)
     {
         $min = 0;
-        $max = PHP_INT_MAX;
+        $max = 100;//PHP_INT_MAX;
         
         $head->setMaxOccurances($max);
         $head->setMinOccurances($min);
